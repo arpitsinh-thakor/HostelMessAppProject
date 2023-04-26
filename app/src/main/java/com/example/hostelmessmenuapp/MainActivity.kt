@@ -42,10 +42,10 @@ class MainActivity : AppCompatActivity() {
         recyclerViewLunch = findViewById<RecyclerView>(R.id.rvLunch)
         recyclerViewLunch.layoutManager = LinearLayoutManager(this)
 
-        val lunchFood = arrayOf("LUNCH1", "LUNCH2", "LUNCH3", "LUNCH4", "LUNCH5")
+        val lunchFood = arrayOf("LUNCH1", "LUNCH2", "LUNCH3", "LUNCH4", "LUNCH5", "LUNCH6", "LUNCH7", "LUNCH8", "LUNCH9", "LUNCH10")
         lunchList = arrayListOf()
         for(index in lunchFood.indices){
-            val item = DataLunch(lunchFood[index])
+            val item = DataLunch(index, lunchFood[index])
             lunchList.add(item)
         }
 
@@ -57,9 +57,19 @@ class MainActivity : AppCompatActivity() {
         for(index in breakfastFood.indices){
             val item = DataBreakfast(index, breakfastFood[index])
             database.child(index.toString()).setValue(item).addOnSuccessListener {
-                Toast.makeText(this, "$index added", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "$index breakfast added", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
-                Toast.makeText(this, "$index added", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "$index breakfast not added", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        database = FirebaseDatabase.getInstance().getReference("lunch")
+        for(index in lunchFood.indices){
+            val item = DataLunch(index, lunchFood[index])
+            database.child(index.toString()).setValue(item).addOnSuccessListener {
+                Toast.makeText(this, "$index lunch added", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(this, "$index lunch not added", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -11,6 +11,7 @@ class LunchAdapter(var menuList: ArrayList<DataLunch>, var context: Activity)
     : RecyclerView.Adapter<LunchAdapter.MyViewHolder>(){
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val day: TextView = itemView.findViewById(R.id.day)
         val menuItem: TextView = itemView.findViewById<TextView>(R.id.item)
     }
 
@@ -25,6 +26,7 @@ class LunchAdapter(var menuList: ArrayList<DataLunch>, var context: Activity)
     override fun onBindViewHolder(holder: LunchAdapter.MyViewHolder, position: Int) {
         val currItem = menuList[position]
         holder.menuItem.text = currItem.food
+        holder.day.text = currItem.day.toString()
     }
 
     override fun getItemCount(): Int {
