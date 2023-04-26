@@ -35,4 +35,18 @@
         app:layout_constraintTop_toTopOf="parent">
     </androidx.recyclerview.widget.RecyclerView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dinner"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDinner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
 </LinearLayout>

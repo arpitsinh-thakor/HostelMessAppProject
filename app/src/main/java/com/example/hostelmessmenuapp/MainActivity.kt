@@ -1,11 +1,16 @@
 package com.example.hostelmessmenuapp
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hostelmessmenuapp.Adapter.BreakfastAdapter
+import com.example.hostelmessmenuapp.Adapter.DinnerAdapter
+import com.example.hostelmessmenuapp.Adapter.LunchAdapter
+import com.example.hostelmessmenuapp.Data.DataBreakfast
+import com.example.hostelmessmenuapp.Data.DataDinner
+import com.example.hostelmessmenuapp.Data.DataLunch
 import com.example.hostelmessmenuapp.databinding.ActivityMainBinding
 import com.google.firebase.database.*
 
@@ -13,11 +18,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: DatabaseReference
     private lateinit var database2: DatabaseReference
+    private lateinit var database3: DatabaseReference
 
     lateinit var  breakfastList: ArrayList<DataBreakfast>
     lateinit var recyclerViewBreakFast: RecyclerView
     lateinit var  lunchList: ArrayList<DataLunch>
     lateinit var recyclerViewLunch: RecyclerView
+    lateinit var dinnerList: ArrayList<DataDinner>
+    lateinit var recyclerViewDinner: RecyclerView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +46,14 @@ class MainActivity : AppCompatActivity() {
         recyclerViewLunch.setHasFixedSize(true)
 
         lunchList = arrayListOf<DataLunch>()
-       getUserData2()
+        getUserData2()
+
+        recyclerViewDinner = binding.rvDinner
+        recyclerViewDinner.layoutManager = LinearLayoutManager(this)
+        recyclerViewDinner.setHasFixedSize(true)
+
+        dinnerList = arrayListOf<DataDinner>()
+        getUserData3()
 
 
 
@@ -55,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 //            breakfastList.add(item)
 //        }
 //
-//        var breakfastAdapter = BreakfastAdapter(breakfastList, this)
+//        var breakfastAdapter = BreakfastAdapter(breakfastList)
 //        recyclerViewBreakFast.adapter = breakfastAdapter
 //
 //
@@ -69,8 +84,21 @@ class MainActivity : AppCompatActivity() {
 //            lunchList.add(item)
 //        }
 //
-//        var lunchAdapter = LunchAdapter(lunchList, this)
+//        var lunchAdapter = LunchAdapter(lunchList)
 //        recyclerViewLunch.adapter = lunchAdapter
+//
+//        recyclerViewLunch = findViewById<RecyclerView>(R.id.rvLunch)
+//        recyclerViewLunch.layoutManager = LinearLayoutManager(this)
+//
+//        val dinnerFood = arrayOf("DINNER1", "DINNER2", "DINNER3", "DINNER4", "DINNER5", "DINNER6", "DINNER7", "DINNER8", "DINNER9", "DINNER10")
+//        dinnerList = arrayListOf()
+//        for(index in dinnerFood.indices){
+//            val item = DataDinner(index, dinnerFood[index])
+//            dinnerList.add(item)
+//        }
+//
+//        var dinnerAdapter = DinnerAdapter(dinnerList)
+//        recyclerViewLunch.adapter = dinnerAdapter
 //
 //
 //        database = FirebaseDatabase.getInstance().getReference("breakfast")
@@ -92,7 +120,19 @@ class MainActivity : AppCompatActivity() {
 //                Toast.makeText(this, "$index lunch not added", Toast.LENGTH_SHORT).show()
 //            }
 //        }
+//
+//        database = FirebaseDatabase.getInstance().getReference("dinner")
+//        for(index in dinnerFood.indices){
+//            val item = DataDinner(index, dinnerFood[index])
+//            database.child(index.toString()).setValue(item).addOnSuccessListener {
+//                Toast.makeText(this, "$index dinner added", Toast.LENGTH_SHORT).show()
+//            }.addOnFailureListener {
+//                Toast.makeText(this, "$index dinner not added", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
+
+
 
     private fun getUserData() {
         database = FirebaseDatabase.getInstance().getReference("breakfast")
@@ -123,6 +163,26 @@ class MainActivity : AppCompatActivity() {
                         lunchList.add(user!!)
                     }
                     recyclerViewLunch.adapter = LunchAdapter(lunchList)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    private fun getUserData3() {
+        database3 = FirebaseDatabase.getInstance().getReference("dinner")
+        database3.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    for(userSnapshot in snapshot.children){
+                        val user = userSnapshot.getValue(DataDinner::class.java)
+                        dinnerList.add(user!!)
+                    }
+                    recyclerViewDinner.adapter = DinnerAdapter(dinnerList)
                 }
             }
 
