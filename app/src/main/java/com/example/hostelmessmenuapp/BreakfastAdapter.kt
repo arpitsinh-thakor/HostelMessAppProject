@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class BreakfastAdapter(var menuList: ArrayList<DataBreakfast>, var context: Activity)
+class BreakfastAdapter(var menuList: ArrayList<DataBreakfast>)
     :RecyclerView.Adapter<BreakfastAdapter.MyViewHolder>(){
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val menuItem: TextView = itemView.findViewById<TextView>(R.id.item)
+        val menuItem: TextView = itemView.findViewById(R.id.item)
         val day: TextView = itemView.findViewById(R.id.day)
     }
 

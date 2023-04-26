@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class LunchAdapter(var menuList: ArrayList<DataLunch>, var context: Activity)
+class LunchAdapter(var menuList: ArrayList<DataLunch>)
     : RecyclerView.Adapter<LunchAdapter.MyViewHolder>(){
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
