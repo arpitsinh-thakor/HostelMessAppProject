@@ -1,5 +1,6 @@
-package com.example.hostelmessmenuapp
+package com.example.hostelmessmenuapp.Activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -34,6 +35,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.btn.setOnClickListener {
+            val intent = Intent(this, ShowDataActivity::class.java)
+            startActivity(intent)
+        }
 
 
         recyclerViewBreakFast = binding.rvBreakfast
