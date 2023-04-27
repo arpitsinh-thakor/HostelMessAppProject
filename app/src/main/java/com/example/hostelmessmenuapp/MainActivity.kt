@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var dinnerList: ArrayList<DataDinner>
     lateinit var recyclerViewDinner: RecyclerView
 
+    lateinit var ref: DatabaseReference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +57,19 @@ class MainActivity : AppCompatActivity() {
         dinnerList = arrayListOf<DataDinner>()
         getUserData3()
 
-
-
-
+        ref = FirebaseDatabase.getInstance().reference
+        val id = 1
+        val idRef = ref.child("breakfast").child(id.toString())
+        idRef.get().addOnCompleteListener { task ->
+            if(task.isSuccessful){
+                val snapshot = task.result
+                val day = snapshot.child("day").getValue(Long::class.java)
+                val item = snapshot.child("foodList").getValue(String::class.java)
+                Toast.makeText(this, "Found -> $day $item", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this, "not found", Toast.LENGTH_SHORT).show()
+            }
+        }
 
 //        recyclerViewBreakFast = findViewById<RecyclerView>(R.id.rvBreakfast)
 //        recyclerViewBreakFast.layoutManager = LinearLayoutManager(this)
@@ -193,3 +205,4 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
+
