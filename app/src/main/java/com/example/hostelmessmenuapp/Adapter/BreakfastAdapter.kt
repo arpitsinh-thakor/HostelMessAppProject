@@ -33,6 +33,5 @@ class BreakfastAdapter(var menuList: ArrayList<DataBreakfast>)
     override fun getItemCount(): Int {
         return menuList.size
     }
-
 }
 

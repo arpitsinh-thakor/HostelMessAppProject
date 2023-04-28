@@ -1,5 +1,6 @@
 package com.example.hostelmessmenuapp.Activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -21,6 +22,12 @@ class ShowDataActivity : AppCompatActivity() {
         val btn = binding.button
         val editText = binding.editText
         val textView = binding.textView
+
+        val btnCombinedData = binding.btnCombinedData
+        btnCombinedData.setOnClickListener {
+            val intent = Intent(this@ShowDataActivity, CombinedDataActivity::class.java)
+            startActivity(intent)
+        }
 
 
         btn.setOnClickListener {
