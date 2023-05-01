@@ -56,5 +56,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         />
 
+    <Button
+        android:id="@+id/btnDatabyDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CLick to show Combined Data by DATE->"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCombinedData"
+        />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

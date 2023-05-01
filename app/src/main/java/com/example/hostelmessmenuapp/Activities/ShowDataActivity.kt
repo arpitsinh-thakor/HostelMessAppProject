@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.hostelmessmenuapp.Testing.DataByDateActivity
 import com.example.hostelmessmenuapp.databinding.ActivityMainBinding
 import com.example.hostelmessmenuapp.databinding.ActivityShowDataBinding
 import com.google.firebase.database.DatabaseReference
@@ -28,6 +29,12 @@ class ShowDataActivity : AppCompatActivity() {
             val intent = Intent(this@ShowDataActivity, CombinedDataActivity::class.java)
             startActivity(intent)
         }
+        val btnDataByDate = binding.btnDatabyDate
+        btnDataByDate.setOnClickListener {
+            val intent  = Intent(this@ShowDataActivity, DataByDateActivity::class.java)
+            startActivity(intent)
+        }
+
 
 
         btn.setOnClickListener {

@@ -9,12 +9,14 @@ import com.example.hostelmessmenuapp.Data.DataBreakfast
 import com.example.hostelmessmenuapp.Data.DataDinner
 import com.example.hostelmessmenuapp.Data.DataLunch
 import com.example.hostelmessmenuapp.R
+import com.example.hostelmessmenuapp.Testing.DataByDate
 import kotlin.math.min
 
 class CombinedDataAdapter(var breakfastList: ArrayList<DataBreakfast>,
                             var lunchList: ArrayList<DataLunch>,
                                 var dinnerList: ArrayList<DataDinner>,
-                                    var DAY: Int)
+                                    var DAY: String,
+                                        var objList: ArrayList<DataByDate>)
     :RecyclerView.Adapter<CombinedDataAdapter.MyViewHolder>(){
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val tvBreakfast: TextView = itemView.findViewById(R.id.breakfastItem)
@@ -32,16 +34,16 @@ class CombinedDataAdapter(var breakfastList: ArrayList<DataBreakfast>,
     }
 
     override fun getItemCount(): Int {
-        return min( breakfastList.size, min( lunchList.size, dinnerList.size))
+        return objList.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val curr1 = breakfastList[position]
-        val curr2 = lunchList[position]
-        val curr3 = dinnerList[position]
-        holder.tvBreakfast.text = curr1.foodList
-        holder.tvLunch.text = curr2.food
-        holder.tvDinner.text = curr3.foodList
-        holder.day.text = "Day -> ${position + DAY}"
+        val breakfast = objList[position].breakfast
+        val lunch = objList[position].lunch
+        val dinner = objList[position].dinner
+        holder.tvBreakfast.text = breakfast.toString()
+        holder.tvLunch.text = lunch.toString()
+        holder.tvDinner.text = dinner.toString()
+        holder.day.text = "Day -> ${position} + $DAY"
     }
 }
