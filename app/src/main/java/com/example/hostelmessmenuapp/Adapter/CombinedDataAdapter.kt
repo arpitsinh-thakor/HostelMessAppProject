@@ -1,15 +1,25 @@
 package com.example.hostelmessmenuapp.Adapter
 
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hostelmessmenuapp.Data.DataBreakfast
 import com.example.hostelmessmenuapp.Data.DataDinner
 import com.example.hostelmessmenuapp.Data.DataLunch
+import com.example.hostelmessmenuapp.Notification.AlarmReceiver
 import com.example.hostelmessmenuapp.R
 import com.example.hostelmessmenuapp.Testing.DataByDate
+import java.util.Calendar
 import kotlin.math.min
 
 class CombinedDataAdapter(var breakfastList: ArrayList<DataBreakfast>,
@@ -18,6 +28,7 @@ class CombinedDataAdapter(var breakfastList: ArrayList<DataBreakfast>,
                                     var DAY: String,
                                         var objList: ArrayList<DataByDate>)
     :RecyclerView.Adapter<CombinedDataAdapter.MyViewHolder>(){
+
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val tvBreakfast: TextView = itemView.findViewById(R.id.breakfastItem)
         val tvLunch: TextView = itemView.findViewById(R.id.lunchItem)
@@ -46,4 +57,6 @@ class CombinedDataAdapter(var breakfastList: ArrayList<DataBreakfast>,
         holder.tvDinner.text = dinner.toString()
         holder.day.text = "Day -> ${position} + $DAY"
     }
+
+
 }

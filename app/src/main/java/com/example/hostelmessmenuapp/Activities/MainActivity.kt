@@ -1,5 +1,9 @@
 package com.example.hostelmessmenuapp.Activities
 
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,8 +16,15 @@ import com.example.hostelmessmenuapp.Adapter.LunchAdapter
 import com.example.hostelmessmenuapp.Data.DataBreakfast
 import com.example.hostelmessmenuapp.Data.DataDinner
 import com.example.hostelmessmenuapp.Data.DataLunch
+import com.example.hostelmessmenuapp.Notification.AlarmReceiver
+import com.example.hostelmessmenuapp.RoomDatabase.MenuDatabase
 import com.example.hostelmessmenuapp.databinding.ActivityMainBinding
 import com.google.firebase.database.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -30,11 +41,21 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var ref: DatabaseReference
 
+    lateinit var notificationCalender: Calendar
+    lateinit var alarmManager: AlarmManager
+    lateinit var pendingIntent: PendingIntent
+    private lateinit var menuDb : MenuDatabase
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        menuDb = MenuDatabase.getDatabase(this)
+        createNotificationChannel()
+
 
         binding.btn.setOnClickListener {
             val intent = Intent(this, ShowDataActivity::class.java)
@@ -209,6 +230,56 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun createNotificationChannel() {
+        val cal = Calendar.getInstance()
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+        val month = cal.get(Calendar.MONTH)
+        val year = cal.get(Calendar.YEAR)
+        val date = "$day-${month+1}-$year"
+        var des:String = ":"
+        GlobalScope.launch(Dispatchers.IO) {
+            des = menuDb.menuDao().find(date).breakFast
+        }
+        Toast.makeText(this@MainActivity, "date -> $date", Toast.LENGTH_LONG).show()
+        Toast.makeText(this@MainActivity, "des -> $des", Toast.LENGTH_SHORT).show()
+
+        val name :CharSequence = "it's notification Channel"
+        val description = des
+        val importance  = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel("Arpit", name, importance)
+        channel.description = description.toString()
+        val notificationManager = getSystemService(
+            NotificationManager::class.java
+        )
+        notificationManager.createNotificationChannel(channel)
+        cal.clear()
+        setTime()
+        setAlarm(des)
+    }
+
+
+
+    private fun setTime() {
+        notificationCalender = Calendar.getInstance()
+        notificationCalender.set(Calendar.HOUR_OF_DAY, 18)
+        notificationCalender.set(Calendar.MINUTE, 10)
+        notificationCalender.set(Calendar.SECOND, 0)
+        notificationCalender.set(Calendar.MILLISECOND, 0)
+    }
+    private fun setAlarm(des: String) {
+        alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+        intent.putExtra("des" , des)
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP, notificationCalender.timeInMillis,
+            pendingIntent
+        )
+
+        Toast.makeText(this, "Alarm set for ${notificationCalender.timeInMillis}", Toast.LENGTH_SHORT).show()
     }
 }
 
