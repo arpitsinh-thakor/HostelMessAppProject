@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "31597127815",
+    "firebase_url": "https://hostel-mess-menu-app-default-rtdb.firebaseio.com",
     "project_id": "hostel-mess-menu-app",
     "storage_bucket": "hostel-mess-menu-app.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "31597127815-db4pmrtetgf0p1muhgb7uss3krmtpoab.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hostelmessmenuapp",
+            "certificate_hash": "e3689cd00a52ab937a65f9b78f42e46cc4c491e6"
+          }
+        },
         {
           "client_id": "31597127815-lhdn794i3jcvksb3ntpeh0d2hro7uv3k.apps.googleusercontent.com",
           "client_type": 3

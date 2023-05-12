@@ -16,9 +16,11 @@ import com.example.hostelmessmenuapp.Adapter.LunchAdapter
 import com.example.hostelmessmenuapp.Data.DataBreakfast
 import com.example.hostelmessmenuapp.Data.DataDinner
 import com.example.hostelmessmenuapp.Data.DataLunch
+import com.example.hostelmessmenuapp.Login.GoogleSignInActivity
 import com.example.hostelmessmenuapp.Notification.AlarmReceiver
 import com.example.hostelmessmenuapp.RoomDatabase.MenuDatabase
 import com.example.hostelmessmenuapp.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -46,15 +48,33 @@ class MainActivity : AppCompatActivity() {
     lateinit var pendingIntent: PendingIntent
     private lateinit var menuDb : MenuDatabase
 
+    private lateinit var auth: FirebaseAuth
+    private var NAME: String = "name"
+    private var EMAIL: String = "email"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        auth = FirebaseAuth.getInstance()
+        var email = intent.getStringExtra("email")
+        if(email != null) EMAIL = email
+        var displayName = intent.getStringExtra("name")
+        if (displayName != null) NAME = displayName
+
+        binding.textView.text = EMAIL + "\n" + NAME
+
+        binding.signOutBtn.setOnClickListener {
+            auth.signOut()
+            EMAIL = ""
+            NAME = ""
+            startActivity(Intent(this, GoogleSignInActivity::class.java))
+        }
 
         menuDb = MenuDatabase.getDatabase(this)
-        createNotificationChannel()
+//        createNotificationChannel()
 
 
         binding.btn.setOnClickListener {
@@ -68,21 +88,21 @@ class MainActivity : AppCompatActivity() {
         recyclerViewBreakFast.setHasFixedSize(true)
 
          breakfastList = arrayListOf<DataBreakfast>()
-         getUserData()
+//         getUserData()
 
         recyclerViewLunch = binding.rvLunch
         recyclerViewLunch.layoutManager = LinearLayoutManager(this)
         recyclerViewLunch.setHasFixedSize(true)
 
         lunchList = arrayListOf<DataLunch>()
-        getUserData2()
+//        getUserData2()
 
         recyclerViewDinner = binding.rvDinner
         recyclerViewDinner.layoutManager = LinearLayoutManager(this)
         recyclerViewDinner.setHasFixedSize(true)
 
         dinnerList = arrayListOf<DataDinner>()
-        getUserData3()
+//        getUserData3()
 
         ref = FirebaseDatabase.getInstance().reference
         val id = 1

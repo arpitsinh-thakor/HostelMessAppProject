@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,21 +18,10 @@
         android:theme="@style/Theme.HostelMessMenuApp"
         tools:targetApi="31">
         <activity
-            android:name=".Testing.DataByDateActivity"
+            android:name=".Login.GoogleSignInActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.CombinedDataActivity"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".Activity"-->
-<!--            android:exported="false" />-->
-        <activity
-            android:name=".Activities.ShowDataActivity"
-            android:exported="false"
-            android:label="@string/title_activity_show_data"
-            android:theme="@style/Theme.HostelMessMenuApp.NoActionBar" />
-        <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Login.SignUpActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,9 +29,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <receiver android:name=".Notification.AlarmReceiver"/>
-        
+        <activity
+            android:name=".Login.SignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Testing.DataByDateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.CombinedDataActivity"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".Activity" -->
+        <!-- android:exported="false" /> -->
+        <activity
+            android:name=".Activities.ShowDataActivity"
+            android:exported="false"
+            android:label="@string/title_activity_show_data"
+            android:theme="@style/Theme.HostelMessMenuApp.NoActionBar" />
+        <activity
+            android:name=".Activities.MainActivity"
+            android:exported="true"></activity>
+
+        <receiver android:name=".Notification.AlarmReceiver" />
     </application>
 
 </manifest>
