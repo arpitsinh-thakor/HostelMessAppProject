@@ -46,6 +46,8 @@ class CombinedDataActivity : AppCompatActivity() {
     lateinit var alarmManager: AlarmManager
     lateinit var pendingIntent: PendingIntent
     lateinit var breakfastRecord: ArrayList<String>
+    lateinit var lunchRecord: ArrayList<String>
+    lateinit var dinnerRecord: ArrayList<String>
 
     private lateinit var menuDb : MenuDatabase
 
@@ -69,18 +71,20 @@ class CombinedDataActivity : AppCompatActivity() {
 
         breakfastList = arrayListOf<DataBreakfast>()
         breakfastRecord = arrayListOf()
-//        getUserData()
+        getUserData()
 
         lunchList = arrayListOf<DataLunch>()
-//        getUserData2()
+        lunchRecord = arrayListOf()
+        getUserData2()
 
         dinnerList = arrayListOf<DataDinner>()
+        dinnerRecord = arrayListOf()
         objList = arrayListOf()
         getUserData3()
 
-        createNotificationChannel()
-        setTime()
-        setAlarm()
+//        createNotificationChannel()
+////        setTime()
+//        setAlarm()
 
     }
 
@@ -141,6 +145,8 @@ class CombinedDataActivity : AppCompatActivity() {
                                 menuDb.menuDao().insert(menu)
                             }
                             breakfastRecord.add(user.breakfast.toString())
+                            lunchRecord.add(user.lunch.toString())
+                            dinnerRecord.add(user.dinner.toString())
 //                        }
                     }
                 }

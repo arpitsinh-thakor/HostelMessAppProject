@@ -234,20 +234,24 @@ class MainActivity : AppCompatActivity() {
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun createNotificationChannel() {
-        val cal = Calendar.getInstance()
+        var cal = Calendar.getInstance()
         val day = cal.get(Calendar.DAY_OF_MONTH)
         val month = cal.get(Calendar.MONTH)
         val year = cal.get(Calendar.YEAR)
         val date = "$day-${month+1}-$year"
-        var des:String = ":"
+        var desBreakfast:String = ":"
+        var desLunch:String = ":"
+        var desDinner:String = ":"
         GlobalScope.launch(Dispatchers.IO) {
-            des = menuDb.menuDao().find(date).breakFast
+            desBreakfast = menuDb.menuDao().find(date).breakFast ?: ""
+            desLunch = menuDb.menuDao().find(date).lunch ?: ""
+            desDinner = menuDb.menuDao().find(date).dinner ?: ""
         }
         Toast.makeText(this@MainActivity, "date -> $date", Toast.LENGTH_LONG).show()
-        Toast.makeText(this@MainActivity, "des -> $des", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@MainActivity, "des -> $desBreakfast", Toast.LENGTH_SHORT).show()
 
         val name :CharSequence = "it's notification Channel"
-        val description = des
+        val description = desBreakfast
         val importance  = NotificationManager.IMPORTANCE_HIGH
         val channel = NotificationChannel("Arpit", name, importance)
         channel.description = description.toString()
@@ -256,16 +260,38 @@ class MainActivity : AppCompatActivity() {
         )
         notificationManager.createNotificationChannel(channel)
         cal.clear()
-        setTime()
-        setAlarm(des)
+        setTime(23, 9)
+        setAlarm(desBreakfast)
+
+        cal = Calendar.getInstance()
+        val channel2 = NotificationChannel("Arpit", name, importance)
+        channel2.description = description.toString()
+        val notificationManager2 = getSystemService(
+            NotificationManager::class.java
+        )
+        notificationManager2.createNotificationChannel(channel)
+        cal.clear()
+        setTime(23, 10)
+        setAlarm(desLunch)
+
+        cal = Calendar.getInstance()
+        val channel3 = NotificationChannel("Arpit", name, importance)
+        channel3.description = description.toString()
+        val notificationManager3 = getSystemService(
+            NotificationManager::class.java
+        )
+        notificationManager3.createNotificationChannel(channel)
+        cal.clear()
+        setTime(23, 11)
+        setAlarm(desDinner)
     }
 
 
 
-    private fun setTime() {
+    private fun setTime(hour_of_day: Int, minute: Int) {
         notificationCalender = Calendar.getInstance()
-        notificationCalender.set(Calendar.HOUR_OF_DAY, 18)
-        notificationCalender.set(Calendar.MINUTE, 10)
+        notificationCalender.set(Calendar.HOUR_OF_DAY, hour_of_day)
+        notificationCalender.set(Calendar.MINUTE, minute)
         notificationCalender.set(Calendar.SECOND, 0)
         notificationCalender.set(Calendar.MILLISECOND, 0)
     }
@@ -273,13 +299,13 @@ class MainActivity : AppCompatActivity() {
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java)
         intent.putExtra("des" , des)
-        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        pendingIntent = PendingIntent.getBroadcast(this, (0..2147483647).random(), intent, PendingIntent.FLAG_IMMUTABLE)
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP, notificationCalender.timeInMillis,
             pendingIntent
         )
 
-        Toast.makeText(this, "Alarm set for ${notificationCalender.timeInMillis}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Alarm set for $des -> ${notificationCalender.timeInMillis}", Toast.LENGTH_SHORT).show()
     }
 }
 
